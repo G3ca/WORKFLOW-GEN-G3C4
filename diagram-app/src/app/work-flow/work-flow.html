@@ -1,7 +1,7 @@
 <div class="canvas-container" 
      #scene 
-     (mousedown)="startPan($event)" 
-     (wheel)="onWheel($event)">
+     (mousedown)="StartPan($event)" 
+     (wheel)="OnWheel($event)">
 
   <div class="zoom-layer" 
        [style.transform]="'translate(' + pan.x + 'px, ' + pan.y + 'px) scale(' + scale + ')'">

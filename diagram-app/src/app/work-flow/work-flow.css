@@ -2,23 +2,36 @@
   display: block;
   width: 100%;
   height: 100%;
-  overflow: hidden; 
 }
 
 .canvas-container {
   width: 100%;
   height: 100%;
   background-color: #1a1a1a;
-  padding: 40px;
+  overflow: hidden; 
+  position: relative;
+  cursor: grab; 
   
-
-  overflow-x: auto;   
-  overflow-y: hidden; 
   
   display: flex;
   align-items: center;
+  justify-content: center;
+}
 
-  scroll-behavior: smooth;
+.canvas-container:active {
+  cursor: grabbing; 
+}
+
+
+.zoom-layer {
+
+  transform-origin: center center; 
+  transition: transform 0.1s ease-out;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: min-content; 
 }
 
 .workflow-row {
