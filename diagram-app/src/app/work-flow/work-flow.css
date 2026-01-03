@@ -8,30 +8,30 @@
   width: 100%;
   height: 100%;
   background-color: #1a1a1a;
-  overflow: hidden; 
+  overflow: hidden;
   position: relative;
-  cursor: grab; 
-  
-  
+  cursor: grab;
+
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .canvas-container:active {
-  cursor: grabbing; 
+  cursor: grabbing;
 }
 
 
 .zoom-layer {
 
-  transform-origin: center center; 
+  transform-origin: center center;
   transition: transform 0.1s ease-out;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: min-content; 
+  min-width: min-content;
 }
 
 .workflow-row {
@@ -52,9 +52,9 @@
 
 /* Styl koła - max 60 znaków */
 .circle {
-  width: 80px;
-  height: 80px;
-  background-color: #d4d4d4;
+  width: 156px;
+  height: 156px;
+  background-color: #D9D9D9;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -66,36 +66,46 @@
   word-wrap: break-word;
   overflow: hidden;
   flex-shrink: 0;
-  border: 2px solid transparent; /* Opcjonalnie dla estetyki */
+  border: 2px solid transparent;
+  /* Opcjonalnie dla estetyki */
 }
 
 /* Styl prostokątów - max 100 znaków */
 .side-stack {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 15px;
 }
 
 .rect {
-  width: 120px;
-  height: 28px;
-  background-color: #d4d4d4;
+  width: 176px;
+  height: 92px;
+  background-color: #D9D9D9;
   color: #111;
   font-size: 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin-left: 43px;
+  margin-bottom: 30px;
   padding: 0 8px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Kropki na końcu zbyt długiego tekstu */
+  text-overflow: ellipsis;
+  /* Kropki na końcu zbyt długiego tekstu */
+}
+
+.rect:last-child {
+  margin-bottom: 0;
 }
 
 /* Pionowa linia */
 .v-line {
   width: 1px;
-  background-color: #666;
-  align-self: stretch; /* Rozciąga się do wysokości stosu */
-  margin-left: 10px;
+  background-color: #FFFFFF;
+  align-self: stretch;
+  /* Rozciąga się do wysokości stosu */
+  margin-left: 43px;
 }
 
 /* Strzałka */
@@ -104,9 +114,11 @@
 }
 
 .arrow {
-  width: 40px;
+  margin-left: 30px;
+  margin-right: 30px;
+  width: 90px;
   height: 2px;
-  background-color: #666;
+  background-color: #FFFFFF;
   position: relative;
 }
 
@@ -114,10 +126,13 @@
   content: '';
   position: absolute;
   right: 0;
-  top: -4px;
+  top: 50%;
   width: 10px;
   height: 10px;
-  border-right: 2px solid #666;
-  border-bottom: 2px solid #666;
-  transform: rotate(-45deg);
+
+
+  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+
+  transform: translateY(-50%) rotate(-45deg);
 }

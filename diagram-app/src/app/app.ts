@@ -11,7 +11,8 @@ import { WorkFlowComponent, WorkflowStep } from './work-flow/work-flow';
   styleUrls: ['./app.css']
 })
 export class AppComponent {
-  // Lista przechowująca wszystkie kroki diagramu
+
+  // Lista przechowująca kroki diagramu
   workflowSteps: WorkflowStep[] = [];
 
   // Zmienne powiązane z polami input (ngModel)
@@ -20,7 +21,7 @@ export class AppComponent {
   rect2: string = '';
   rect3: string = '';
 
-  // Dodaje zwykłe koło
+  // Dodanie kroku głównego
   addCircle() {
     if (!this.mainInput.trim()) return;
 
@@ -33,25 +34,23 @@ export class AppComponent {
     this.resetInputs();
   }
 
-  // Dodaje koło z prostokątami
+  // Dodanie opcji bocznych do kroku
   addComplex() {
+    if (!this.rect1.trim() && !this.rect2.trim() && !this.rect3.trim()) return;
     if (!this.mainInput.trim()) return;
 
     this.workflowSteps.push({
       id: Date.now(),
       type: 'with-side',
       mainText: this.mainInput,
-      sideRects: [
-        this.rect1 || 'Opcja 1',
-        this.rect2 || 'Opcja 2',
-        this.rect3 || 'Opcja 3'
-      ]
+      sideRects: [this.rect1, this.rect2, this.rect3].filter(rect => rect.trim() !== '')
     });
 
     this.resetInputs();
   }
 
-  // Czyści formularz po dodaniu
+  // Czyszczenie pól input
+
   resetInputs() {
     this.mainInput = '';
     this.rect1 = '';
