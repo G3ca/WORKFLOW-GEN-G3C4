@@ -1,52 +1,41 @@
 <div class="app-layout">
-  
-  <aside class="sidebar">
-    <h2>Kreator</h2>
-    
-    <div class="form-group">
-      <label>Tekst główny (Koło):</label>
-      <input type="text" [(ngModel)]="mainInput" maxlength="60" placeholder="Max 60 znaków...">
-      <small>{{ mainInput.length }}/60</small>
-    </div>
 
-    <button class="btn-primary" (click)="addCircle()">Dodaj Krok Prosty (Koło)</button>
+    <aside class="sidebar">
+        <h2>Kreator</h2>
 
-    <hr class="separator">
+        <div class="form-group">
+            <label>Tekst główny (Koło):</label>
+            <input type="text" [(ngModel)]="mainInput" maxlength="60" placeholder="Max 60 znaków...">
+            <small>{{ mainInput.length }}/60</small>
+        </div>
 
-    <div class="form-group">
-      <label>Teksty podrzędne (Prostokąty):</label>
+        <button class="btn-primary" (click)="addCircle()">Dodaj Krok Prosty (Koło)</button>
 
-      <input [(ngModel)]="rect1" maxlength="100" placeholder="Prostokąt 1">
-      <input [(ngModel)]="rect2" maxlength="100" placeholder="Prostokąt 2">
-      <input [(ngModel)]="rect3" maxlength="100" placeholder="Prostokąt 3">
-      <small>Max 100 znaków na prostokąt</small>
-    </div>
-<button class="btn-secondary" (click)="addComplex()">Dodaj Krok Złożony</button>
+        <hr class="separator">
 
-    <h3>Plik</h3>
-    
-    <button class="btn-action" (click)="saveWorkflow()">💾 Zapisz Diagram</button>
-    
-    <label class="btn-action btn-upload">
-      📂 Wczytaj Diagram <input type="file" accept=".json" (change)="loadWorkflow($event)" style="display: none;">
-    </label>
+        <div class="form-group">
+            <label>Teksty podrzędne (Prostokąty):</label>
 
-    <button class="btn-action" (click)="exportToSVG()">🖼️ Eksportuj SVG</button>
+            <input [(ngModel)]="rect1" maxlength="100" placeholder="Prostokąt 1">
+            <input [(ngModel)]="rect2" maxlength="100" placeholder="Prostokąt 2">
+            <input [(ngModel)]="rect3" maxlength="100" placeholder="Prostokąt 3">
+            <small>Max 100 znaków na prostokąt</small>
+        </div>
+        <button class="btn-secondary" (click)="addComplex()">Dodaj Krok Złożony</button>
 
-    
-  </aside>
+        <h3>Plik</h3>
 
+        <button class="btn-action" (click)="saveWorkflow()">💾 Zapisz Diagram</button>
 
+        <label class="btn-action btn-upload"> 📂 Wczytaj Diagram <input type="file" accept=".json"
+                (change)="loadWorkflow($event)" style="display: none;"> </label>
 
+        <button class="btn-action" (click)="exportToSVG()">🖼️ Eksportuj SVG</button>
 
+    </aside>
 
+    <main class="diagram-area">
+        <app-work-flow [steps]="workflowSteps"></app-work-flow>
+    </main>
 
-
-
-
-
-  <main class="diagram-area">
-    <app-work-flow [steps]="workflowSteps"></app-work-flow>
-  </main>
-
-</div>s
+</div>

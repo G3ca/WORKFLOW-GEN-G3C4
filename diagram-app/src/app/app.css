@@ -32,6 +32,7 @@
   color: #ddd;
 }
 
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -89,6 +90,24 @@ button {
   background-color: #555;
 }
 
+.btn-action {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 13px;
+  display: block;
+
+}
+
+.btn-action:hover {
+  background-color: #444;
+}
 
 .btn-upload {
   cursor: pointer;
@@ -123,6 +142,9 @@ button {
   background-color: #444;
   border-color: #666;
 }
+
+
+
 
 
 label.btn-action {
