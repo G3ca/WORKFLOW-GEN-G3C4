@@ -1,41 +1,35 @@
 <div class="app-layout">
+  
+  <aside class="sidebar" [class.sidebar-closed]="!isSidebarOpen">
+    <h2>Kreator</h2>
+    
+    <h3>Plik</h3>
+    <button class="btn-action" (click)="saveWorkflow()">💾 Zapisz Diagram</button>
+    
+    <label class="btn-action">
+      📂 Wczytaj Diagram
+      <input type="file" #fileInput style="display: none;" accept=".json" (change)="loadWorkflow($event)">
+    </label>
+    
+    <button class="btn-action" (click)="exportToSVG()">🖼️ Eksportuj SVG</button>
 
-    <aside class="sidebar">
-        <h2>Kreator</h2>
+    <hr class="separator">
+    
+    <p style="font-size: 12px; color: #666; margin-top: 20px;">
+    Edytuj diagram klikając bezpośrednio na elementy.
+    </p>
 
-        <div class="form-group">
-            <label>Tekst główny (Koło):</label>
-            <input type="text" [(ngModel)]="mainInput" maxlength="60" placeholder="Max 60 znaków...">
-            <small>{{ mainInput.length }}/60</small>
-        </div>
+  </aside>
 
-        <button class="btn-primary" (click)="addCircle()">Dodaj Krok Prosty (Koło)</button>
+  <main class="diagram-area">
+    
+    <button class="toggle-sidebar-btn" (click)="toggleSidebar()" title="Pokaż/Ukryj menu">
+      {{ isSidebarOpen ? '◀' : '▶' }}
+    </button>
 
-        <hr class="separator">
-
-        <div class="form-group">
-            <label>Teksty podrzędne (Prostokąty):</label>
-
-            <input [(ngModel)]="rect1" maxlength="100" placeholder="Prostokąt 1">
-            <input [(ngModel)]="rect2" maxlength="100" placeholder="Prostokąt 2">
-            <input [(ngModel)]="rect3" maxlength="100" placeholder="Prostokąt 3">
-            <small>Max 100 znaków na prostokąt</small>
-        </div>
-        <button class="btn-secondary" (click)="addComplex()">Dodaj Krok Złożony</button>
-
-        <h3>Plik</h3>
-
-        <button class="btn-action" (click)="saveWorkflow()">💾 Zapisz Diagram</button>
-
-        <label class="btn-action btn-upload"> 📂 Wczytaj Diagram <input type="file" accept=".json"
-                (change)="loadWorkflow($event)" style="display: none;"> </label>
-
-        <button class="btn-action" (click)="exportToSVG()">🖼️ Eksportuj SVG</button>
-
-    </aside>
-
-    <main class="diagram-area">
+    <div id="diagram-content" style="width: 100%; height: 100%;">
         <app-work-flow [steps]="workflowSteps"></app-work-flow>
-    </main>
+    </div>
+  </main>
 
 </div>

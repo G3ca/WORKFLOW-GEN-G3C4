@@ -59,10 +59,15 @@ export class AppComponent {
     this.rect3 = '';
   }
 
+  isSidebarOpen = false;
 
-//Zapis diagramu do pliku JSON
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 
-saveWorkflow() {
+  //Zapis diagramu do pliku JSON
+
+  saveWorkflow() {
     const dataStr = JSON.stringify(this.workflowSteps, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -73,10 +78,10 @@ saveWorkflow() {
     a.click();
 
     window.URL.revokeObjectURL(url);
-}
+  }
 
 
-loadWorkflow(event: any) {
+  loadWorkflow(event: any) {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -103,21 +108,21 @@ loadWorkflow(event: any) {
 
   exportToSVG() {
     const node = document.getElementById('workflow-container');
-    if (!node){
+    if (!node) {
       alert('Nie znaleziono kontenera diagramu!');
       return;
     }
 
     htmlToImage.toSvg(node)
-    .then((dataUrl: string) => {
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = `workflow-diagram-${Date.now()}.svg`;
-      a.click();
-    })
-    .catch((error: any) => {
-      console.error('Błąd podczas eksportu do SVG:', error);
-      alert('Wystąpił błąd podczas eksportu do SVG.');
-    });
+      .then((dataUrl: string) => {
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = `workflow-diagram-${Date.now()}.svg`;
+        a.click();
+      })
+      .catch((error: any) => {
+        console.error('Błąd podczas eksportu do SVG:', error);
+        alert('Wystąpił błąd podczas eksportu do SVG.');
+      });
   }
 }

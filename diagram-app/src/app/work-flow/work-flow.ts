@@ -1,6 +1,6 @@
 import { Component, ElementRef, Host, HostListener, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms';
 
 export interface WorkflowStep {
   id: number;
@@ -12,7 +12,7 @@ export interface WorkflowStep {
 @Component({
   selector: 'app-work-flow',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './work-flow.html',
   styleUrls: ['./work-flow.css']
 })
@@ -22,7 +22,6 @@ export class WorkFlowComponent {
 
   @Input() steps: WorkflowStep[] = [];
 
-
   //Stan Widoku
   scale = 1;
   pan = { x: 0, y: 0 };
@@ -30,7 +29,7 @@ export class WorkFlowComponent {
   //Stan przeciągania
   isDragging = false;
   private lastMousePosition = { x: 0, y: 0 };
-  
+
   OnWheel(event: WheelEvent) {
     event.preventDefault();
     const zoomIntensity = 0.1;
@@ -49,36 +48,70 @@ export class WorkFlowComponent {
     if (this.isDragging) {
       const deltaY = event.clientY - this.lastMousePosition.y;
       const deltaX = event.clientX - this.lastMousePosition.x;
-      
+
       this.pan.x += deltaX;
       this.pan.y += deltaY;
 
       this.lastMousePosition = { x: event.clientX, y: event.clientY };
     }
-  
+
   }
 
   @HostListener('document:mouseup', ['$event'])
   OnMouseUp(event: MouseEvent) {
     this.isDragging = false;
   }
-  
-  
-  
-  
 
-  
-  
-  //Umożliwienie przewijania poziomego za pomocą kółka myszy wygenerowanego diagramu
-  // @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLElement>;
 
-  // @HostListener('wheel', ['$event'])
-  // onWheel(event: WheelEvent) {
-  //   if (this.scrollContainer) {
-  //     event.preventDefault();
-  //     this.scrollContainer.nativeElement.scrollLeft += event.deltaY;
-  //   }
-  // }
+  addStepAtIndex(index: number, event: MouseEvent) {
+    event.stopPropagation();
+    const newStep: WorkflowStep = {
+      id: Date.now(),
+      type: 'main',
+      mainText: 'Nowy krok'
+    };
+    this.steps.splice(index, 0, newStep);
+  }
+
+  deleteStep(index: number) {
+    this.steps.splice(index, 1);
+  }
+
+  toggleType(step: WorkflowStep) {
+    if (step.type === 'main') {
+      step.type = 'with-side';
+      step.sideRects = ['Krok 1'];
+    } else {
+      step.type = 'main';
+      delete step.sideRects;
+    }
+  }
+
+  addRect(step: WorkflowStep) {
+    if (!step.sideRects) step.sideRects = [];
+    if (step.sideRects.length < 5) {
+      step.sideRects.push(`Krok ${step.sideRects.length + 1}`);
+    }
+  }
+
+  removeRect(step: WorkflowStep, index: number) {
+    if (step.sideRects) {
+      step.sideRects.splice(index, 1);
+      if (step.sideRects.length === 0) {
+        step.type = 'main';
+      }
+    }
+
+  }
+
+
+
+  isEditMode: boolean = true;
+
+  toggleEditMode() {
+    this.isEditMode = !this.isEditMode;
+  }
+
 
 }
 

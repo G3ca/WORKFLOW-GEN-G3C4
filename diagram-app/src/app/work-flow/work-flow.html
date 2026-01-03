@@ -1,35 +1,97 @@
 <div class="canvas-container" #scene (mousedown)="StartPan($event)" (wheel)="OnWheel($event)">
 
+  <div class="mode-switch" (mousedown)="$event.stopPropagation()">
+    <button (click)="toggleEditMode()" [class.active]="isEditMode">
+      {{ isEditMode ? '👁️ Tryb Podglądu' : '✏️ Tryb Edycji' }}
+    </button>
+  </div>
+
   <div class="zoom-layer" [style.transform]="'translate(' + pan.x + 'px, ' + pan.y + 'px) scale(' + scale + ')'">
 
-      <div class="workflow-row" id="workflow-container">
-        @for (step of steps; track step.id; let last = $last) {
-        <div class="node-wrapper">
+    <div class="workflow-row" id="workflow-container">
 
-          <div class="main-group">
+      @if (steps.length === 0 && isEditMode) {
+      <div class="start-container">
+        <button class="add-btn-big start-btn" (click)="addStepAtIndex(0, $event)">
+          + ROZPOCZNIJ (DODAJ KROK)
+        </button>
+      </div>
+      }
+
+      @for (step of steps; track step.id; let last = $last; let i = $index) {
+      <div class="node-wrapper">
+
+        <div class="main-group">
+
+          <div class="circle-wrapper relative-group">
+
+            @if (isEditMode) {
+            <div class="hover-actions">
+              <button class="btn-toggle" (click)="toggleType(step)" title="Zmień typ / Reset">🔄</button>
+              <div style="width: 1px; height: 14px; background: #555;"></div>
+              <button class="btn-delete-x" (click)="deleteStep(i)" title="Usuń krok">×</button>
+            </div>
+            }
+
             <div class="circle" [title]="step.mainText">
-              <span>{{ step.mainText }}</span>
+              <textarea [(ngModel)]="step.mainText" class="circle-textarea" [readonly]="!isEditMode"
+                [class.view-only]="!isEditMode" maxlength="60" spellcheck="false"
+                (mousedown)="$event.stopPropagation()">
+              </textarea>
             </div>
 
-            @if (step.type === 'with-side') {
-            <div class="side-stack">
-              @for (rectText of step.sideRects; track $index) {
-              <div class="rect" [title]="rectText">{{ rectText }}</div>
+          </div>
+
+          @if (step.type === 'with-side') {
+          <div class="side-stack">
+
+            @for (rectText of step.sideRects; track $index) {
+            <div class="rect-wrapper">
+              <div class="rect">
+                <input [(ngModel)]="step.sideRects![$index]" class="rect-input" [readonly]="!isEditMode"
+                  [class.view-only]="!isEditMode" maxlength="100" spellcheck="false"
+                  (mousedown)="$event.stopPropagation()">
+              </div>
+              @if (isEditMode) {
+              <button class="remove-rect-btn" (click)="removeRect(step, $index)">×</button>
               }
             </div>
-            <div class="v-line"></div>
             }
-          </div>
 
-          @if (!last) {
-          <div class="arrow-wrapper">
-            <div class="arrow"></div>
+            @if (isEditMode && (step.sideRects?.length || 0) < 5) { <button class="add-rect-btn" (click)="addRect(step)"
+              (mousedown)="$event.stopPropagation()">
+              + Dodaj opcję
+              </button>
+              }
+
           </div>
+          <div class="v-line"></div>
           }
+        </div>
 
+        @if (!last) {
+        <div class="arrow-wrapper">
+          <div class="arrow"></div>
+          @if (isEditMode) {
+          <button class="add-btn-floating" (click)="addStepAtIndex(i + 1, $event)">+</button>
+          }
         </div>
         }
+
+        @if (last) {
+        <div class="arrow-wrapper end-add">
+          @if (isEditMode) {
+          <div class="arrow-short"></div>
+          <button class="add-btn-big" (click)="addStepAtIndex(steps.length, $event)">
+            + Dodaj
+          </button>
+          }
+        </div>
+        }
+
       </div>
+      }
+    </div>
 
   </div>
 </div>
