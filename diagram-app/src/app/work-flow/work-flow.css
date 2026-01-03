@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; 
+}
+
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  background-color: #1a1a1a;
+  padding: 40px;
+  
+
+  overflow-x: auto;   
+  overflow-y: hidden; 
+  
+  display: flex;
+  align-items: center;
+
+  scroll-behavior: smooth;
+}
+
+.workflow-row {
+  display: flex;
+  align-items: center;
+}
+
+.node-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.main-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Styl koła - max 60 znaków */
+.circle {
+  width: 80px;
+  height: 80px;
+  background-color: #d4d4d4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11px;
+  padding: 8px;
+  color: #111;
+  word-wrap: break-word;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid transparent; /* Opcjonalnie dla estetyki */
+}
+
+/* Styl prostokątów - max 100 znaków */
+.side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rect {
+  width: 120px;
+  height: 28px;
+  background-color: #d4d4d4;
+  color: #111;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Kropki na końcu zbyt długiego tekstu */
+}
+
+/* Pionowa linia */
+.v-line {
+  width: 1px;
+  background-color: #666;
+  align-self: stretch; /* Rozciąga się do wysokości stosu */
+  margin-left: 10px;
+}
+
+/* Strzałka */
+.arrow-wrapper {
+  padding: 0 20px;
+}
+
+.arrow {
+  width: 40px;
+  height: 2px;
+  background-color: #666;
+  position: relative;
+}
+
+.arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #666;
+  border-bottom: 2px solid #666;
+  transform: rotate(-45deg);
+}
