@@ -28,8 +28,7 @@
     <button class="btn-action" (click)="saveWorkflow()">💾 Zapisz Diagram</button>
     
     <label class="btn-action btn-upload">
-      📂 Wczytaj Diagram
-      <input type="file" accept=".json" (change)="loadWorkflow($event)" style="display: none;">
+      📂 Wczytaj Diagram <input type="file" accept=".json" (change)="loadWorkflow($event)" style="display: none;">
     </label>
 
     <button class="btn-action" (click)="exportToSVG()">🖼️ Eksportuj SVG</button>

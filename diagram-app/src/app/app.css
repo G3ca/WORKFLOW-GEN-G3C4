@@ -89,26 +89,43 @@ button {
   background-color: #555;
 }
 
+
+.btn-upload {
+  cursor: pointer;
+  
+}
 .btn-action {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 8px;
+ 
+  display: flex;             
+  align-items: center;        
+  justify-content: center;   
+  width: 100%;                
+  box-sizing: border-box;    
+  margin-bottom: 10px;
+  
+
+  padding: 12px;
   background-color: #333;
   color: #fff;
   border: 1px solid #555;
   border-radius: 4px;
   cursor: pointer;
-  text-align: center;
-  font-size: 13px;
-  display: block;
+  
 
+  font-family: inherit;      
+  font-size: 13px;
+  line-height: normal;        
+  text-decoration: none;      
+  appearance: none;           
 }
 
 .btn-action:hover {
   background-color: #444;
+  border-color: #666;
 }
 
-.btn-upload {
+
+label.btn-action {
   cursor: pointer;
 }
 
