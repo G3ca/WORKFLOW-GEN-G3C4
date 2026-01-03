@@ -22,7 +22,7 @@
   flex-direction: column;
   gap: 15px;
   border-right: 1px solid #333;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   z-index: 10;
 }
 
@@ -75,13 +75,42 @@ button {
   background-color: #007acc;
   color: white;
 }
-.btn-primary:hover { background-color: #005f9e; }
+
+.btn-primary:hover {
+  background-color: #005f9e;
+}
 
 .btn-secondary {
   background-color: #444;
   color: white;
 }
-.btn-secondary:hover { background-color: #555; }
+
+.btn-secondary:hover {
+  background-color: #555;
+}
+
+.btn-action {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 13px;
+  display: block;
+
+}
+
+.btn-action:hover {
+  background-color: #444;
+}
+
+.btn-upload {
+  cursor: pointer;
+}
 
 .separator {
   border: 0;
@@ -94,5 +123,5 @@ button {
 .diagram-area {
   flex: 1;
   background-color: #1e1e1e;
-  overflow: hidden; /* WorkFlowComponent ma własny scroll */
+  overflow: hidden;
 }

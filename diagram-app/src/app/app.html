@@ -21,9 +21,30 @@
       <input [(ngModel)]="rect3" maxlength="100" placeholder="Prostokąt 3">
       <small>Max 100 znaków na prostokąt</small>
     </div>
+<button class="btn-secondary" (click)="addComplex()">Dodaj Krok Złożony</button>
 
-    <button class="btn-secondary" (click)="addComplex()">Dodaj Krok Złożony</button>
+    <h3>Plik</h3>
+    
+    <button class="btn-action" (click)="saveWorkflow()">💾 Zapisz Diagram</button>
+    
+    <label class="btn-action btn-upload">
+      📂 Wczytaj Diagram
+      <input type="file" accept=".json" (change)="loadWorkflow($event)" style="display: none;">
+    </label>
+
+    <button class="btn-action" (click)="exportToSVG()">🖼️ Eksportuj SVG</button>
+
+    
   </aside>
+
+
+
+
+
+
+
+
+
 
   <main class="diagram-area">
     <app-work-flow [steps]="workflowSteps"></app-work-flow>

@@ -1,39 +1,35 @@
-<div class="canvas-container" 
-     #scene 
-     (mousedown)="StartPan($event)" 
-     (wheel)="OnWheel($event)">
+<div class="canvas-container" #scene (mousedown)="StartPan($event)" (wheel)="OnWheel($event)">
 
-  <div class="zoom-layer" 
-       [style.transform]="'translate(' + pan.x + 'px, ' + pan.y + 'px) scale(' + scale + ')'">
+  <div class="zoom-layer" [style.transform]="'translate(' + pan.x + 'px, ' + pan.y + 'px) scale(' + scale + ')'">
 
-    <div class="workflow-row">
-      @for (step of steps; track step.id; let last = $last) {
+      <div class="workflow-row" id="workflow-container">
+        @for (step of steps; track step.id; let last = $last) {
         <div class="node-wrapper">
-          
+
           <div class="main-group">
             <div class="circle" [title]="step.mainText">
               <span>{{ step.mainText }}</span>
             </div>
 
             @if (step.type === 'with-side') {
-              <div class="side-stack">
-                @for (rectText of step.sideRects; track $index) {
-                  <div class="rect" [title]="rectText">{{ rectText }}</div>
-                }
-              </div>
-              <div class="v-line"></div>
+            <div class="side-stack">
+              @for (rectText of step.sideRects; track $index) {
+              <div class="rect" [title]="rectText">{{ rectText }}</div>
+              }
+            </div>
+            <div class="v-line"></div>
             }
           </div>
 
           @if (!last) {
-            <div class="arrow-wrapper">
-              <div class="arrow"></div>
-            </div>
+          <div class="arrow-wrapper">
+            <div class="arrow"></div>
+          </div>
           }
 
         </div>
-      }
-    </div>
+        }
+      </div>
 
   </div>
 </div>

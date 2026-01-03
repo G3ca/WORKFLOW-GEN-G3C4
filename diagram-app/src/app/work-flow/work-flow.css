@@ -37,6 +37,7 @@
 .workflow-row {
   display: flex;
   align-items: center;
+   background-color: #1a1a1a;
 }
 
 .node-wrapper {
@@ -62,12 +63,18 @@
   text-align: center;
   font-size: 11px;
   padding: 8px;
-  color: #111;
   word-wrap: break-word;
   overflow: hidden;
   flex-shrink: 0;
   border: 2px solid transparent;
-  /* Opcjonalnie dla estetyki */
+
+
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600; 
+  font-size: 12px;  
+  letter-spacing: 0.5px;
+  color: #0F172A;
+
 }
 
 /* Styl prostokątów - max 100 znaków */
@@ -81,7 +88,6 @@
   width: 176px;
   height: 92px;
   background-color: #D9D9D9;
-  color: #111;
   font-size: 10px;
   display: flex;
   align-items: center;
@@ -92,6 +98,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  color: #111111; 
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+
   /* Kropki na końcu zbyt długiego tekstu */
 }
 
