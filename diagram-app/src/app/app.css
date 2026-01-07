@@ -18,7 +18,7 @@
 
 .sidebar {
   width: 300px;
-  background-color: #252526;
+  background-color: #25252638;
   color: #fff;
   padding: 20px;
   display: flex;
@@ -145,6 +145,6 @@
 }
 
 .toggle-sidebar-btn:hover {
-  background-color: #505050;
+  background-color: #5050505d;
   border-color: #777;
 }

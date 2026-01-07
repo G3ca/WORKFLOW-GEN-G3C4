@@ -1,14 +1,19 @@
 <div class="canvas-container" #scene (mousedown)="StartPan($event)" (wheel)="OnWheel($event)">
 
-  <div class="mode-switch" (mousedown)="$event.stopPropagation()">
+  <div class="controls-top-right" (mousedown)="$event.stopPropagation()">
     <button (click)="toggleEditMode()" [class.active]="isEditMode">
-      {{ isEditMode ? '👁️ Tryb Podglądu' : '✏️ Tryb Edycji' }}
+      {{ isEditMode ? '👁️ View' : '✏️ Edit' }}
     </button>
+
+    <button (click)="toggleOrientation()" [class.active]="isVertical">
+      {{ isVertical ? '│ Vertical' : '━ Horizontal' }}
+    </button>
+
   </div>
 
   <div class="zoom-layer" [style.transform]="'translate(' + pan.x + 'px, ' + pan.y + 'px) scale(' + scale + ')'">
 
-    <div class="workflow-row" id="workflow-container">
+    <div class="workflow-row" id="workflow-container" [class.vertical-layout]="isVertical">
 
       @if (steps.length === 0 && isEditMode) {
       <div class="start-container">
@@ -48,9 +53,9 @@
             @for (rectText of step.sideRects; track $index) {
             <div class="rect-wrapper">
               <div class="rect">
-                <input [(ngModel)]="step.sideRects![$index]" class="rect-input" [readonly]="!isEditMode"
-                  [class.view-only]="!isEditMode" maxlength="100" spellcheck="false"
-                  (mousedown)="$event.stopPropagation()">
+                <textarea [(ngModel)]="step.sideRects![$index]" class="rect-textarea" maxlength="100" spellcheck="false"
+                  [readonly]="!isEditMode" [class.view-only]="!isEditMode" (mousedown)="$event.stopPropagation()">
+                </textarea>
               </div>
               @if (isEditMode) {
               <button class="remove-rect-btn" (click)="removeRect(step, $index)">×</button>

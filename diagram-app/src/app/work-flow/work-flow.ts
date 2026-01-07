@@ -112,6 +112,9 @@ export class WorkFlowComponent {
     this.isEditMode = !this.isEditMode;
   }
 
-
+  isVertical: boolean = false;
+  toggleOrientation() {
+    this.isVertical = !this.isVertical;
+  }
 }
 

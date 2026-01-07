@@ -1,22 +1,22 @@
 <div class="app-layout">
   
   <aside class="sidebar" [class.sidebar-closed]="!isSidebarOpen">
-    <h2>Kreator</h2>
+    <h2>Creator</h2>
     
-    <h3>Plik</h3>
-    <button class="btn-action" (click)="saveWorkflow()">💾 Zapisz Diagram</button>
+    <h3>File</h3>
+    <button class="btn-action" (click)="saveWorkflow()">💾 Save Workflow</button>
     
     <label class="btn-action">
-      📂 Wczytaj Diagram
+      📂 Load Workflow
       <input type="file" #fileInput style="display: none;" accept=".json" (change)="loadWorkflow($event)">
     </label>
     
-    <button class="btn-action" (click)="exportToSVG()">🖼️ Eksportuj SVG</button>
+    <button class="btn-action" (click)="exportToSVG()">🖼️ Export SVG</button>
 
     <hr class="separator">
     
     <p style="font-size: 12px; color: #666; margin-top: 20px;">
-    Edytuj diagram klikając bezpośrednio na elementy.
+    Edit the diagram by clicking directly on the elements.
     </p>
 
   </aside>
