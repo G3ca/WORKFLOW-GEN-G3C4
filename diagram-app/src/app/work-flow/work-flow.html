@@ -42,7 +42,9 @@
             <div class="circle" [title]="step.mainText">
               <textarea [ngModel]="step.mainText" (ngModelChange)="onMainTextChange(step, $event)"
                 class="circle-textarea" [readonly]="!isEditMode()" [class.view-only]="!isEditMode()" maxlength="60"
-                spellcheck="false" (mousedown)="$event.stopPropagation()">
+                spellcheck="false" (mousedown)="$event.stopPropagation()"
+                (keydown)="limitLines($event, 5)">
+                
               </textarea>
             </div>
 
