@@ -55,8 +55,9 @@
             <div class="rect-wrapper">
               <div class="rect">
                 <textarea [ngModel]="rect.text" (ngModelChange)="onRectTextChange(step, rect.id, $event)"
-                  class="rect-textarea" maxlength="100" spellcheck="false" [readonly]="!isEditMode()"
-                  [class.view-only]="!isEditMode()" (mousedown)="$event.stopPropagation()">
+                  class="rect-textarea" maxlength="85" spellcheck="false" [readonly]="!isEditMode()"
+                  [class.view-only]="!isEditMode()" (mousedown)="$event.stopPropagation()"
+                  (keydown)="limitLines($event, 5)">
                 </textarea>
               </div>
               @if (isEditMode()) {

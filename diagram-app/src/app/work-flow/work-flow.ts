@@ -251,6 +251,21 @@ export class WorkFlowComponent implements OnInit {
   }
 
   /**
+   * Limits the number of lines in a textarea.
+   * Prevents Enter key if max lines reached.
+   * @param event - The keyboard event
+   * @param maxLines - Maximum number of lines allowed
+   */
+  limitLines(event: KeyboardEvent, maxLines: number): void {
+    const textarea = event.target as HTMLTextAreaElement;
+    const lines = textarea.value.split('\n').length;
+
+    if (event.key === 'Enter' && lines >= maxLines) {
+      event.preventDefault();
+    }
+  }
+
+  /**
    * Toggles between edit and view mode.
    */
   toggleEditMode(): void {
