@@ -1,11 +1,17 @@
+/* HOST & CONTAINER  -  Basic styles for component and container   */
+
 :host {
   display: block;
   width: 100%;
   height: 100%;
 }
+
 #workflow-container {
   background-color: #1a1a1a;
 }
+
+/* CANVAS & ZOOM  -  Styles for workspace area and zoom functionality   */
+
 .canvas-container {
   width: 100%;
   height: 100%;
@@ -31,6 +37,8 @@
   min-width: min-content;
 }
 
+/* LAYOUT STRUCTURE  -  Workflow layout structure (row, wrapper, group)   */
+
 .workflow-row {
   display: flex;
   align-items: center;
@@ -46,6 +54,12 @@
   align-items: center;
 }
 
+.relative-group {
+  position: relative;
+}
+
+/* CIRCLE  -  Styles for circular nodes   */
+
 .circle-wrapper {
   display: flex;
   flex-direction: column;
@@ -54,7 +68,6 @@
   position: relative;
 }
 
-/* --- KOŁO --- */
 .circle {
   width: 156px;
   height: 156px;
@@ -77,15 +90,15 @@
 
 .circle-textarea {
   width: 115px;
-  height: auto; 
-  max-height: 115px; 
+  height: auto;
+  max-height: 115px;
   field-sizing: content;
-  min-height: 24px; 
+  min-height: 24px;
   background: transparent;
   border: none;
   outline: none;
   resize: none;
-  padding: 0 5px; 
+  padding: 0 5px;
   box-sizing: border-box;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   font-weight: 600;
@@ -93,19 +106,20 @@
   color: #1a1a2e;
   text-align: center;
   line-height: 1.4;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
-/* --- PROSTOKĄTY (STACK) --- */
+/* RECTANGULAR NODES  -  Styles for rectangular nodes and stack   */
+
 .side-stack {
-  position: relative; /* Ważne dla przycisku add-rect-btn */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
   justify-content: center;
-  align-items: flex-start; 
+  align-items: flex-start;
   margin-left: 43px;
-  margin-bottom: 0; 
+  margin-bottom: 0;
 }
 
 .rect-wrapper {
@@ -114,61 +128,46 @@
   gap: 10px;
 }
 
-
-
 .rect {
   width: 176px;
-  
- 
-  min-height: 92px; 
+  min-height: 92px;
   height: auto;
-  
   background: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
-  border-radius: 8px; 
-  
- 
+  border-radius: 8px;
   display: flex;
-  align-items: center;     
-  justify-content: center; 
-  
-  padding: 12px; 
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
   box-sizing: border-box;
-  border: 2px solid #e0e0e0;
+  border: 2px solid #e0e0e03f;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-
   color: #1a1a2e;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   font-weight: 500;
   font-size: 12px;
 }
 
-
 .rect-textarea {
-  width: 100%;      
-
+  width: 100%;
   height: auto;
-  field-sizing: content; 
-  min-height: 1em;      
-  
+  field-sizing: content;
+  min-height: 1em;
   background: transparent;
   border: none;
   outline: none;
   resize: none;
   margin: 0;
   padding: 0;
-  
-
   text-align: center;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   font-weight: 500;
   font-size: 12px;
   color: #1a1a2e;
   line-height: 1.4;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
-
-
+/* LINES  -  Styles for connecting lines   */
 
 .v-line {
   width: 1px;
@@ -177,7 +176,57 @@
   margin-left: 20px;
 }
 
+/* ARROWS  -  Styles for arrows between nodes   */
 
+.arrow-wrapper {
+  padding: 0 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  width: 90px;
+  height: 2px;
+  background-color: #FFFFFF;
+  position: relative;
+  margin: 0 10px;
+}
+
+.arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.arrow-short {
+  width: 40px;
+  height: 2px;
+  background-color: #FFFFFF;
+  position: relative;
+}
+
+.arrow-short::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* BUTTONS  -  All action buttons   */
+
+/* Remove rectangle button */
 .remove-rect-btn {
   background: none;
   border: none;
@@ -189,12 +238,16 @@
   padding: 0 5px;
   transition: opacity 0.2s;
 }
-.remove-rect-btn:hover { opacity: 1; }
 
+.remove-rect-btn:hover {
+  opacity: 1;
+}
+
+/* Add rectangle button */
 .add-rect-btn {
   position: absolute;
-  bottom: -40px; 
-  left: 0;       
+  bottom: -40px;
+  left: 0;
   width: 176px;
   box-sizing: border-box;
   padding: 8px;
@@ -216,62 +269,38 @@
   border-color: #888;
 }
 
-
-.arrow-wrapper {
-  padding: 0 20px;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.arrow {
-  width: 90px;
-  height: 2px;
-  background-color: #FFFFFF;
-  position: relative;
-  margin: 0 10px;
-}
-.arrow::after {
-  content: ''; position: absolute; right: 0; top: 50%; width: 10px; height: 10px;
-  border-right: 2px solid #FFFFFF; border-bottom: 2px solid #FFFFFF;
-  transform: translateY(-50%) rotate(-45deg);
-}
-
-.arrow-short {
-  width: 40px;
-  height: 2px;
-  background-color: #FFFFFF;
-  position: relative;
-}
-.arrow-short::after {
-  content: ''; position: absolute; right: 0; top: 50%; width: 10px; height: 10px;
-  border-right: 2px solid #FFFFFF; border-bottom: 2px solid #FFFFFF;
-  transform: translateY(-50%) rotate(-45deg);
-}
-
-.end-add {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding-right: 20px;
-}
-
-
+/* Floating add button on arrows */
 .add-btn-floating {
   position: absolute;
-  top: -14px; left: 50%; transform: translateX(-50%);
-  width: 28px; height: 28px;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #007acc; color: white;
+  background: #007acc;
+  color: white;
   border: 3px solid #1a1a1a;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-  opacity: 0; transition: all 0.2s; z-index: 5;
+  opacity: 0;
+  transition: all 0.2s;
+  z-index: 5;
 }
-.arrow-wrapper:hover .add-btn-floating { opacity: 1; }
-.add-btn-floating:hover { transform: translateX(-50%) scale(1.1); background: #008be6; }
 
+.arrow-wrapper:hover .add-btn-floating {
+  opacity: 1;
+}
+
+.add-btn-floating:hover {
+  transform: translateX(-50%) scale(1.1);
+  background: #008be6;
+}
+
+/* Big add button */
 .add-btn-big {
   background: transparent;
   border: 1px dashed #666;
@@ -284,27 +313,49 @@
   transition: all 0.2s;
   white-space: nowrap;
 }
+
 .add-btn-big:hover {
-  border-color: #007acc; color: #007acc; background: rgba(0, 122, 204, 0.05);
+  border-color: #007acc;
+  color: #007acc;
+  background: rgba(0, 122, 204, 0.05);
 }
 
+/* Start button */
 .start-container {
-  display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
+
 .start-btn {
-  border: 2px solid #007acc; color: #007acc; background: rgba(0, 122, 204, 0.1);
-  font-weight: 600; font-size: 14px; padding: 15px 30px;
+  border: 2px solid #007acc;
+  color: #007acc;
+  background: rgba(0, 122, 204, 0.1);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 15px 30px;
 }
-.start-btn:hover { background: #007acc; color: white; }
 
-
-.relative-group {
-  position: relative;
+.start-btn:hover {
+  background: #007acc;
+  color: white;
 }
+
+/* End add section */
+.end-add {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-right: 20px;
+}
+
+/* HOVER ACTIONS  -  Action menu appearing on hover   */
 
 .hover-actions {
   position: absolute;
-  top: -40px; 
+  top: -40px;
   left: 50%;
   transform: translateX(-50%);
   background: #252526;
@@ -317,7 +368,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s, transform 0.15s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   z-index: 100;
 }
 
@@ -342,13 +393,20 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
   transition: transform 0.2s;
-  padding: 0; width: 24px; height: 24px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
 }
-.hover-actions button:hover { transform: scale(1.2); }
+
+.hover-actions button:hover {
+  transform: scale(1.2);
+}
 
 .btn-delete-x {
   color: #ff4d4d;
@@ -361,9 +419,12 @@
   color: #aaa;
   font-size: 14px !important;
 }
-.btn-toggle:hover { color: #fff; }
 
+.btn-toggle:hover {
+  color: #fff;
+}
 
+/* TOP-RIGHT CONTROLS  Panel kontrolny w prawym górnym rogu */
 
 .controls-top-right {
   position: absolute;
@@ -403,7 +464,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
   opacity: 0;
   transition: opacity 0.2s;
   border-radius: 8px;
@@ -429,95 +490,75 @@
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
 }
 
+/* VIEW MODE  - Only for read */
 
 .view-only {
-  cursor: default !important; 
-  user-select: none; 
+  cursor: default !important;
+  user-select: none;
 }
 
+/* VERTICAL LAYOUT  -  Styles for vertical layout   */
 
-
-
-
+/* Base vertical layout */
 .workflow-row.vertical-layout {
   flex-direction: column;
   gap: 0;
 }
-
 
 .workflow-row.vertical-layout .node-wrapper {
   flex-direction: column;
   align-items: center;
 }
 
-
-
-
 .workflow-row.vertical-layout .main-group {
-  flex-direction: column; 
-  align-items: center;    
+  flex-direction: column;
+  align-items: center;
 }
 
-
+/* Circle in vertical layout */
 .workflow-row.vertical-layout .circle-wrapper {
-  margin: 0; 
+  margin: 0;
 }
 
-
+/* Side stack in vertical layout */
 .workflow-row.vertical-layout .side-stack {
-  flex-direction: row;    
-  margin-left: 0; 
-  gap: 30px;        
-  margin-top: 40px;       
-  align-items: center;    
-  justify-content: center; 
-  flex-wrap: wrap;       
+  flex-direction: row;
+  margin-left: 0;
+  gap: 30px;
+  margin-top: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-
+/* Vertical line in vertical layout */
 .workflow-row.vertical-layout .v-line {
-  display: block;       
-  width: 90%;         
-  min-width: 100px;    
-  height: 1px;         
+  display: block;
+  width: 90%;
+  min-width: 100px;
+  height: 1px;
   background-color: #FFFFFF;
   margin-bottom: 40px;
-  margin-left: 0;       
-  margin-top: 30px;     
-  align-self: center;  
+  margin-left: 0;
+  margin-top: 30px;
+  align-self: center;
 }
 
-
-
+/* Add rectangle button in vertical layout */
 .workflow-row.vertical-layout .add-rect-btn {
- 
   position: absolute;
-  
-
-  bottom: auto; 
-  left: auto;   
-  
-
-  left: 100%; 
-  
-  
+  bottom: auto;
+  left: 100%;
   top: 50%;
-  transform: translateY(-50%); 
-  
-  
+  transform: translateY(-50%);
   margin: 0;
-  margin-left: 20px; 
-  
-
-  width: 176px; 
+  margin-left: 20px;
+  width: 176px;
 }
 
-
-
-
-
+/* Arrows in vertical layout */
 .workflow-row.vertical-layout .arrow-wrapper {
-  padding: 25px 0;     
+  padding: 25px 0;
   width: auto;
   height: auto;
   flex-direction: column;
@@ -530,71 +571,67 @@
 }
 
 .workflow-row.vertical-layout .arrow::after {
-  top: auto; bottom: 0; right: auto; left: 50%;
+  top: auto;
+  bottom: 0;
+  right: auto;
+  left: 50%;
   transform: translateX(-50%) translateY(4px) rotate(45deg);
-}
-
-.workflow-row.vertical-layout .add-btn-floating {
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-}
-.workflow-row.vertical-layout .add-btn-floating:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-
-.workflow-row.vertical-layout .end-add {
-  flex-direction: column;
-  padding: 0;
-  gap: 10px;
 }
 
 .workflow-row.vertical-layout .arrow-short {
   width: 2px;
   height: 30px;
 }
+
 .workflow-row.vertical-layout .arrow-short::after {
-  top: auto; bottom: 0; left: 50%; right: auto;
+  top: auto;
+  bottom: 0;
+  left: 50%;
+  right: auto;
   transform: translateX(-50%) translateY(4px) rotate(45deg);
 }
 
+/* Floating button in vertical layout */
+.workflow-row.vertical-layout .add-btn-floating {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.workflow-row.vertical-layout .add-btn-floating:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* End add section in vertical layout */
 .workflow-row.vertical-layout .end-add {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 20px;
   padding: 20px 0px;
 }
 
+/* Rectangle wrapper in vertical layout */
 .workflow-row.vertical-layout .rect-wrapper {
   position: relative;
-  display: block; 
-  margin-right: 5px; 
-}
-
-
-.workflow-row.vertical-layout .rect-wrapper {
-  position: relative;
-  display: block; 
-
-  margin-top: 15px; 
+  display: block;
+  margin-top: 15px;
   margin-right: 5px;
 }
 
-
+/* Remove button in vertical layout */
 .workflow-row.vertical-layout .remove-rect-btn {
   position: absolute;
-  top: -22px; 
+  top: -22px;
   left: 50%;
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
 }
-
 
 .workflow-row.vertical-layout .remove-rect-btn:hover {
   transform: translateX(-50%) scale(1.2);
 }
 
-/* ========================================
-   MOBILE RESPONSIVE (< 600px)
-   ======================================== */
+/* MOBILE RESPONSIVE  -  Responsive styles for smaller screens   */
 
 @media (max-width: 600px) {
   .controls-top-right {

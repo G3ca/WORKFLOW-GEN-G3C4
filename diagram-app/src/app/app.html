@@ -1,53 +1,53 @@
 <div class="app-layout">
-  
-  <aside class="sidebar" [class.sidebar-closed]="!isSidebarOpen">
-    
+
+  <aside class="sidebar" [class.sidebar-closed]="!isSidebarOpen()">
+
     <div class="sidebar-header">
-        <h2 style="margin: 0;">{{ lang.t().MENU_TITLE }}</h2>
-        
-        <button class="lang-toggle-btn" (click)="lang.toggleLang()">
-           {{ lang.currentLang() === 'en' ? '🗽 EN' : '🌐 PL' }}
-        </button>
+      <h2 style="margin: 0;">{{ lang.t().MENU_TITLE }}</h2>
+
+      <button class="lang-toggle-btn" (click)="lang.toggleLang()">
+        {{ lang.currentLang() === 'en' ? '🗽 EN' : '🌐 PL' }}
+      </button>
     </div>
-    
+
 
     <button class="btn-action" (click)="saveWorkflow()">
-       
-        {{ lang.t().SAVE_BTN }}
+
+      {{ lang.t().SAVE_BTN }}
     </button>
-    
+
     <label class="btn-action">
-   
+
       {{ lang.t().LOAD_BTN }}
       <input type="file" #fileInput style="display: none;" accept=".json" (change)="loadWorkflow($event)">
     </label>
-    
+
     <button class="btn-action" (click)="exportToSVG()">
-   
-        {{ lang.t().EXPORT_BTN }}
+
+      {{ lang.t().EXPORT_BTN }}
     </button>
 
     <hr class="separator">
-    
+
     <p class="hint-text">
       💡 {{ lang.t().HINT }}
     </p>
 
-    <!-- Sekcja pomocy i samouczka -->
+    <!-- Help and tutorial section -->
     <div class="help-section">
       <h4>{{ lang.t().HELP_TITLE }}</h4>
       <div class="help-links">
         <button class="help-link" (click)="showTutorial('basics')">
-    
+
           {{ lang.t().HELP_BASICS }}
         </button>
         <button class="help-link" (click)="showTutorial('workflow')">
-      
+
           {{ lang.t().HELP_WORKFLOW }}
         </button>
 
         <button class="help-link" (click)="showTutorial('faq')">
-   
+
           {{ lang.t().HELP_FAQ }}
         </button>
       </div>
@@ -56,46 +56,58 @@
   </aside>
 
   <main class="diagram-area">
-    
+
     <button class="toggle-sidebar-btn" (click)="toggleSidebar()" [title]="lang.t().TIP_SIDEBAR">
-      {{ isSidebarOpen ? '◀' : '▶' }}
+      {{ isSidebarOpen() ? '◀' : '▶' }}
     </button>
 
     <div id="diagram-content" style="width: 100%; height: 100%;">
-        <app-work-flow [steps]="workflowSteps"></app-work-flow>
+      <app-work-flow #workflowRef [steps]="workflowSteps()" (stepsChange)="onStepsChange($event)">
+      </app-work-flow>
     </div>
   </main>
 
 </div>
 
 <!-- Modal Popup -->
-<div class="modal-overlay" *ngIf="isModalOpen" (click)="onOverlayClick($event)">
+@if (isModalOpen()) {
+<div class="modal-overlay" (click)="onOverlayClick($event)">
   <div class="modal-container">
     <div class="modal-header">
       <div class="modal-title">
-        <span class="modal-icon">{{ modalIcon }}</span>
-        <h3>{{ modalTitle }}</h3>
+        <span class="modal-icon">{{ modalIcon() }}</span>
+        <h3>{{ modalTitle() }}</h3>
       </div>
       <button class="modal-close" (click)="closeModal()">✕</button>
     </div>
-    
-    <div class="modal-content">
-      <!-- Tekst opisowy (Pierwsze kroki) -->
-      <div class="description-text" *ngIf="isTextModal">
-        <p *ngFor="let item of modalContent">{{ item }}</p>
-      </div>
 
-      <!-- Lista standardowa (Workflow) -->
-      <ul class="tutorial-list" *ngIf="!isFaqModal && !isTextModal">
-        <li *ngFor="let item of modalContent; let i = index">
+    <div class="modal-content">
+      <!-- Description text (Getting Started) -->
+      @if (isTextModal()) {
+      <div class="description-text">
+        @for (item of modalContent(); track $index) {
+        <p>{{ item }}</p>
+        }
+      </div>
+      }
+
+      <!-- Standard list (Workflow) -->
+      @if (!isFaqModal() && !isTextModal()) {
+      <ul class="tutorial-list">
+        @for (item of modalContent(); track $index; let i = $index) {
+        <li>
           <span class="step-number">{{ i + 1 }}</span>
           <span class="step-text">{{ item }}</span>
         </li>
+        }
       </ul>
+      }
 
-      <!-- FAQ lista -->
-      <div class="faq-list" *ngIf="isFaqModal">
-        <div class="faq-item" *ngFor="let item of modalFaqContent">
+      <!-- FAQ list -->
+      @if (isFaqModal()) {
+      <div class="faq-list">
+        @for (item of modalFaqContent(); track $index) {
+        <div class="faq-item">
           <div class="faq-question">
             <span class="faq-icon">Q</span>
             {{ item.q }}
@@ -105,7 +117,9 @@
             {{ item.a }}
           </div>
         </div>
+        }
       </div>
+      }
     </div>
 
     <div class="modal-footer">
@@ -115,3 +129,4 @@
     </div>
   </div>
 </div>
+}

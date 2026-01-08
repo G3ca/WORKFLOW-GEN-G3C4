@@ -1,18 +1,73 @@
 import { Injectable, signal, computed } from '@angular/core';
 
-type Lang = 'en' | 'pl';
+/**
+ * Supported language codes for the application.
+ */
+type SupportedLang = 'en' | 'pl';
 
+/**
+ * Interface defining all translation keys.
+ * Provides type safety and autocomplete for translations.
+ */
+interface TranslationDictionary {
+  readonly MENU_TITLE: string;
+  readonly SAVE_BTN: string;
+  readonly LOAD_BTN: string;
+  readonly EXPORT_BTN: string;
+  readonly HINT: string;
+  readonly BTN_VERTICAL: string;
+  readonly BTN_HORIZONTAL: string;
+  readonly MODE_VIEW: string;
+  readonly MODE_EDIT: string;
+  readonly START_BTN: string;
+  readonly ADD_STEP_BTN: string;
+  readonly ADD_OPTION_BTN: string;
+  readonly TIP_CHANGE_TYPE: string;
+  readonly TIP_DELETE: string;
+  readonly TIP_SIDEBAR: string;
+  readonly HELP_TITLE: string;
+  readonly HELP_BASICS: string;
+  readonly HELP_WORKFLOW: string;
+  readonly HELP_FAQ: string;
+  readonly MODAL_CLOSE: string;
+  readonly TUTORIAL_BASICS_TITLE: string;
+  readonly TUTORIAL_BASICS_CONTENT: readonly string[];
+  readonly TUTORIAL_WORKFLOW_TITLE: string;
+  readonly TUTORIAL_WORKFLOW_CONTENT: readonly string[];
+  readonly TUTORIAL_FAQ_TITLE: string;
+  readonly TUTORIAL_FAQ_CONTENT: readonly { readonly q: string; readonly a: string }[];
+
+  // Keys for workflow operations
+  readonly NEW_STEP_DEFAULT_TEXT: string;
+  readonly NEW_RECT_DEFAULT_TEXT: string;
+  readonly EXPORT_ERROR: string;
+  readonly FILE_READ_ERROR: string;
+  readonly FILE_PARSE_ERROR: string;
+}
+
+/**
+ * Service responsible for handling application translations.
+ * Uses Angular Signals for reactive language switching.
+ *
+ * @example
+ * ```typescript
+ * // In component
+ * lang = inject(TranslationService);
+ *
+ * // In template
+ * {{ lang.t().MENU_TITLE }}
+ * ```
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class TranslationService {
+  /** Current language signal */
+  currentLang = signal<SupportedLang>('en');
 
-  currentLang = signal<Lang>('en');
-
-
- private dictionaries = {
+  /** Type-safe translation dictionaries */
+  private readonly dictionaries: Record<SupportedLang, TranslationDictionary> = {
     en: {
-   
       MENU_TITLE: "Operations",
       SAVE_BTN: "Save Diagram",
       LOAD_BTN: "Load Diagram",
@@ -61,7 +116,13 @@ export class TranslationService {
         { q: "How to save the diagram?", a: "Click \"Save to file\" in the sidebar." },
         { q: "How to export to image?", a: "Use the \"Export SVG\" button." },
         { q: "How to load an existing diagram?", a: "Click \"Load from file\" and select a JSON file." }
-      ]
+      ],
+     
+      NEW_STEP_DEFAULT_TEXT: "New Step",
+      NEW_RECT_DEFAULT_TEXT: "Step",
+      EXPORT_ERROR: "Diagram container not found!",
+      FILE_READ_ERROR: "Error reading file. Please check if the file is not corrupted.",
+      FILE_PARSE_ERROR: "Error parsing JSON file."
     },
     pl: {
     
@@ -113,14 +174,26 @@ export class TranslationService {
         { q: "Jak zapisać diagram?", a: "Kliknij \"Zapisz do pliku\" w sidebar." },
         { q: "Jak wyeksportować do obrazu?", a: "Użyj przycisku \"Eksportuj SVG\"." },
         { q: "Jak wczytać istniejący diagram?", a: "Kliknij \"Wczytaj z pliku\" i wybierz plik JSON." }
-      ]
+      ],
+   
+      NEW_STEP_DEFAULT_TEXT: "Nowy krok",
+      NEW_RECT_DEFAULT_TEXT: "Krok",
+      EXPORT_ERROR: "Nie znaleziono kontenera diagramu!",
+      FILE_READ_ERROR: "Błąd podczas odczytu pliku. Sprawdź czy plik nie jest uszkodzony.",
+      FILE_PARSE_ERROR: "Błąd parsowania pliku JSON."
     }
-  };
+  } as const;
 
-    
-  t = computed(() => this.dictionaries[this.currentLang()]);
+  /**
+   * Computed signal that returns the current language dictionary.
+   * Automatically updates when currentLang changes.
+   */
+  t = computed<TranslationDictionary>(() => this.dictionaries[this.currentLang()]);
 
-  toggleLang() {
+  /**
+   * Toggles between English and Polish languages.
+   */
+  toggleLang(): void {
     this.currentLang.update(lang => lang === 'en' ? 'pl' : 'en');
   }
 }

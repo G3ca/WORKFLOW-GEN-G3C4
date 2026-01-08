@@ -1,178 +1,186 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WorkFlowComponent, WorkflowStep } from './work-flow/work-flow';
+import { WorkFlowComponent } from './work-flow/work-flow';
+import { WorkflowStep, validateWorkflowSteps } from './models/workflow.model';
 import * as htmlToImage from 'html-to-image';
-import { TranslationService } from './translation.service';
+import { TranslationService } from './services/translation.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, FormsModule, WorkFlowComponent],
   templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  styleUrls: ['./app.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 
-  constructor(public lang: TranslationService) {}
+  /** Injected services */
+  public lang = inject(TranslationService);
+  private cdr = inject(ChangeDetectorRef);
 
-  // Lista przechowująca kroki diagramu
-  workflowSteps: WorkflowStep[] = [];
+  /** ViewChild reference to the workflow component for SVG export */
+  @ViewChild('workflowRef') workflowRef!: WorkFlowComponent;
 
-  // Zmienne powiązane z polami input (ngModel)
-  mainInput: string = '';
-  rect1: string = '';
-  rect2: string = '';
-  rect3: string = '';
+  /** List of workflow steps */
+  workflowSteps = signal<WorkflowStep[]>([]);
 
-  // Dodanie kroku głównego
-  addCircle() {
-    if (!this.mainInput.trim()) return;
+  /** Sidebar state */
+  isSidebarOpen = signal(false);
 
-    this.workflowSteps.push({
-      id: Date.now(),
-      type: 'main',
-      mainText: this.mainInput
-    });
+  /** Modal state */
+  isModalOpen = signal(false);
+  modalTitle = signal('');
+  modalIcon = signal('');
+  modalContent = signal<string[]>([]);
+  modalFaqContent = signal<{ q: string; a: string }[]>([]);
+  isFaqModal = signal(false);
+  isTextModal = signal(false);
 
-    this.resetInputs();
+  /**
+   * Handles step changes from child WorkFlowComponent.
+   * @param steps - Updated workflow steps array
+   */
+  onStepsChange(steps: WorkflowStep[]): void {
+    this.workflowSteps.set(steps);
+    this.cdr.markForCheck();
   }
 
-  // Dodanie opcji bocznych do kroku
-  addComplex() {
-    if (!this.rect1.trim() && !this.rect2.trim() && !this.rect3.trim()) return;
-    if (!this.mainInput.trim()) return;
-
-    this.workflowSteps.push({
-      id: Date.now(),
-      type: 'with-side',
-      mainText: this.mainInput,
-      sideRects: [this.rect1, this.rect2, this.rect3].filter(rect => rect.trim() !== '')
-    });
-
-    this.resetInputs();
-  }
-
-  // Czyszczenie pól input
-
-  resetInputs() {
-    this.mainInput = '';
-    this.rect1 = '';
-    this.rect2 = '';
-    this.rect3 = '';
-  }
-
-  isSidebarOpen = false;
-
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
-
-  //Zapis diagramu do pliku JSON
-
-  saveWorkflow() {
-    const dataStr = JSON.stringify(this.workflowSteps, null, 2);
+  /**
+   * Saves the workflow diagram to a JSON file.
+   */
+  saveWorkflow(): void {
+    const dataStr = JSON.stringify(this.workflowSteps(), null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `workflow-diagram-${Date.now()}.json`;
-    a.click();
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `workflow-diagram-${Date.now()}.json`;
+    anchor.click();
 
-    window.URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url);
   }
 
-
-  loadWorkflow(event: any) {
-    const file = event.target.files?.[0];
+  /**
+   * Loads a workflow diagram from a JSON file.
+   * Validates the JSON structure before applying.
+   * Includes proper error handling for FileReader operations.
+   * @param event - The file input change event
+   */
+  loadWorkflow(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e: any) => {
-      try {
-        const content = e.target?.result;
-        const loadedSteps: WorkflowStep[] = JSON.parse(content);
-        if (!Array.isArray(loadedSteps)) {
-          alert('Błąd: Niepoprawny format pliku!');
-          throw new Error('Nieprawidłowy format pliku JSON.');
-        }
-        this.workflowSteps = loadedSteps;
 
+    // Handle FileReader errors
+    reader.onerror = (): void => {
+      console.error('FileReader error:', reader.error);
+      alert(this.lang.t().FILE_READ_ERROR);
+      input.value = '';
+    };
+
+    reader.onload = (e: ProgressEvent<FileReader>): void => {
+      try {
+        const content = e.target?.result as string;
+        const parsedData = JSON.parse(content);
+
+        // Validate and migrate using type guard
+        const loadedSteps = validateWorkflowSteps(parsedData);
+        this.workflowSteps.set(loadedSteps);
+        this.cdr.markForCheck();
       } catch (error) {
-        console.error('Błąd podczas wczytywania pliku:', error);
-        alert('Błąd odczytu pliku JSON.');
+        console.error('Error loading workflow file:', error);
+        alert(error instanceof Error ? error.message : this.lang.t().FILE_PARSE_ERROR);
+      } finally {
+        input.value = ''; // Reset to allow reloading same file
       }
     };
+
     reader.readAsText(file);
-    event.target.value = ''; // Reset input file value
   }
 
-
-  exportToSVG() {
-    const node = document.getElementById('workflow-container');
-    if (!node) {
-      alert('Nie znaleziono kontenera diagramu!');
+  /**
+   * Exports the workflow diagram to an SVG file.
+   * Uses ViewChild reference to access the workflow container.
+   */
+  exportToSVG(): void {
+    // Access workflow container through ViewChild reference
+    const workflowContainer = this.workflowRef?.getContainerElement();
+    if (!workflowContainer) {
+      alert(this.lang.t().EXPORT_ERROR);
       return;
     }
 
-    htmlToImage.toSvg(node)
+    htmlToImage
+      .toSvg(workflowContainer)
       .then((dataUrl: string) => {
-        const a = document.createElement('a');
-        a.href = dataUrl;
-        a.download = `workflow-diagram-${Date.now()}.svg`;
-        a.click();
+        const anchor = document.createElement('a');
+        anchor.href = dataUrl;
+        anchor.download = `workflow-diagram-${Date.now()}.svg`;
+        anchor.click();
       })
-      .catch((error: any) => {
-        console.error('Błąd podczas eksportu do SVG:', error);
-        alert('Wystąpił błąd podczas eksportu do SVG.');
+      .catch((error: Error) => {
+        console.error('Error exporting to SVG:', error);
+        alert(this.lang.t().EXPORT_ERROR);
       });
   }
 
-  // Modal state
-  isModalOpen = false;
-  modalTitle = '';
-  modalIcon = '';
-  modalContent: string[] = [];
-  modalFaqContent: { q: string; a: string }[] = [];
-  isFaqModal = false;
-  isTextModal = false;
+  /**
+   * Toggles the sidebar visibility.
+   */
+  toggleSidebar(): void {
+    this.isSidebarOpen.update(open => !open);
+  }
 
-  // Metoda do wyświetlania samouczków
-  showTutorial(type: 'basics' | 'workflow' | 'shortcuts' | 'faq') {
+  /**
+   * Shows a tutorial modal based on type.
+   * @param type - The type of tutorial to display
+   */
+  showTutorial(type: 'basics' | 'workflow' | 'shortcuts' | 'faq'): void {
     const t = this.lang.t();
-    
-    this.isFaqModal = type === 'faq';
-    this.isTextModal = type === 'basics';
-    this.modalFaqContent = [];
-    this.modalContent = [];
+
+    this.isFaqModal.set(type === 'faq');
+    this.isTextModal.set(type === 'basics');
+    this.modalFaqContent.set([]);
+    this.modalContent.set([]);
 
     switch (type) {
       case 'basics':
-        this.modalIcon = '📖';
-        this.modalTitle = t.TUTORIAL_BASICS_TITLE;
-        this.modalContent = t.TUTORIAL_BASICS_CONTENT as string[];
+        this.modalIcon.set('📖');
+        this.modalTitle.set(t.TUTORIAL_BASICS_TITLE);
+        this.modalContent.set(t.TUTORIAL_BASICS_CONTENT as string[]);
         break;
       case 'workflow':
-        this.modalIcon = '🔄';
-        this.modalTitle = t.TUTORIAL_WORKFLOW_TITLE;
-        this.modalContent = t.TUTORIAL_WORKFLOW_CONTENT as string[];
+        this.modalIcon.set('🔄');
+        this.modalTitle.set(t.TUTORIAL_WORKFLOW_TITLE);
+        this.modalContent.set(t.TUTORIAL_WORKFLOW_CONTENT as string[]);
         break;
       case 'faq':
-        this.modalIcon = '❓';
-        this.modalTitle = t.TUTORIAL_FAQ_TITLE;
-        this.modalFaqContent = t.TUTORIAL_FAQ_CONTENT as { q: string; a: string }[];
+        this.modalIcon.set('❓');
+        this.modalTitle.set(t.TUTORIAL_FAQ_TITLE);
+        this.modalFaqContent.set(t.TUTORIAL_FAQ_CONTENT as { q: string; a: string }[]);
         break;
     }
 
-    this.isModalOpen = true;
+    this.isModalOpen.set(true);
   }
 
-  closeModal() {
-    this.isModalOpen = false;
+  /**
+   * Closes the modal dialog.
+   */
+  closeModal(): void {
+    this.isModalOpen.set(false);
   }
 
-  onOverlayClick(event: MouseEvent) {
+  /**
+   * Handles clicks on the modal overlay to close modal.
+   * @param event - The mouse click event
+   */
+  onOverlayClick(event: MouseEvent): void {
     if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
       this.closeModal();
     }
