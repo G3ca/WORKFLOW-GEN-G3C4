@@ -1,29 +1,63 @@
 <div class="app-layout">
   
   <aside class="sidebar" [class.sidebar-closed]="!isSidebarOpen">
-    <h2>Creator</h2>
     
-    <h3>File</h3>
-    <button class="btn-action" (click)="saveWorkflow()">💾 Save Workflow</button>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="margin: 0;">{{ lang.t().MENU_TITLE }}</h2>
+        
+        <button (click)="lang.toggleLang()" style="padding: 3px 6px; font-size: 10px; cursor: pointer; background: rgba(255,255,255,0.1); color: #94a3b8; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; transition: all 0.2s;">
+           {{ lang.currentLang() === 'en' ? '🗽 EN' : '🌐 PL' }}
+        </button>
+    </div>
+    
+
+    <button class="btn-action" (click)="saveWorkflow()">
+       
+        {{ lang.t().SAVE_BTN }}
+    </button>
     
     <label class="btn-action">
-      📂 Load Workflow
+   
+      {{ lang.t().LOAD_BTN }}
       <input type="file" #fileInput style="display: none;" accept=".json" (change)="loadWorkflow($event)">
     </label>
     
-    <button class="btn-action" (click)="exportToSVG()">🖼️ Export SVG</button>
+    <button class="btn-action" (click)="exportToSVG()">
+   
+        {{ lang.t().EXPORT_BTN }}
+    </button>
 
     <hr class="separator">
     
-    <p style="font-size: 12px; color: #666; margin-top: 20px;">
-    Edit the diagram by clicking directly on the elements.
+    <p class="hint-text">
+      💡 {{ lang.t().HINT }}
     </p>
+
+    <!-- Sekcja pomocy i samouczka -->
+    <div class="help-section">
+      <h4>{{ lang.t().HELP_TITLE }}</h4>
+      <div class="help-links">
+        <button class="help-link" (click)="showTutorial('basics')">
+    
+          {{ lang.t().HELP_BASICS }}
+        </button>
+        <button class="help-link" (click)="showTutorial('workflow')">
+      
+          {{ lang.t().HELP_WORKFLOW }}
+        </button>
+
+        <button class="help-link" (click)="showTutorial('faq')">
+   
+          {{ lang.t().HELP_FAQ }}
+        </button>
+      </div>
+    </div>
 
   </aside>
 
   <main class="diagram-area">
     
-    <button class="toggle-sidebar-btn" (click)="toggleSidebar()" title="Pokaż/Ukryj menu">
+    <button class="toggle-sidebar-btn" (click)="toggleSidebar()" [title]="lang.t().TIP_SIDEBAR">
       {{ isSidebarOpen ? '◀' : '▶' }}
     </button>
 
@@ -32,4 +66,52 @@
     </div>
   </main>
 
+</div>
+
+<!-- Modal Popup -->
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="onOverlayClick($event)">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="modal-title">
+        <span class="modal-icon">{{ modalIcon }}</span>
+        <h3>{{ modalTitle }}</h3>
+      </div>
+      <button class="modal-close" (click)="closeModal()">✕</button>
+    </div>
+    
+    <div class="modal-content">
+      <!-- Tekst opisowy (Pierwsze kroki) -->
+      <div class="description-text" *ngIf="isTextModal">
+        <p *ngFor="let item of modalContent">{{ item }}</p>
+      </div>
+
+      <!-- Lista standardowa (Workflow) -->
+      <ul class="tutorial-list" *ngIf="!isFaqModal && !isTextModal">
+        <li *ngFor="let item of modalContent; let i = index">
+          <span class="step-number">{{ i + 1 }}</span>
+          <span class="step-text">{{ item }}</span>
+        </li>
+      </ul>
+
+      <!-- FAQ lista -->
+      <div class="faq-list" *ngIf="isFaqModal">
+        <div class="faq-item" *ngFor="let item of modalFaqContent">
+          <div class="faq-question">
+            <span class="faq-icon">Q</span>
+            {{ item.q }}
+          </div>
+          <div class="faq-answer">
+            <span class="faq-icon faq-icon-answer">A</span>
+            {{ item.a }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-btn" (click)="closeModal()">
+        {{ lang.t().MODAL_CLOSE }}
+      </button>
+    </div>
+  </div>
 </div>

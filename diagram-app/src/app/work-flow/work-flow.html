@@ -1,12 +1,13 @@
 <div class="canvas-container" #scene (mousedown)="StartPan($event)" (wheel)="OnWheel($event)">
 
   <div class="controls-top-right" (mousedown)="$event.stopPropagation()">
+    
     <button (click)="toggleEditMode()" [class.active]="isEditMode">
-      {{ isEditMode ? '👁️ View' : '✏️ Edit' }}
+      {{ isEditMode ?  lang.t().MODE_EDIT : lang.t().MODE_VIEW }}
     </button>
 
     <button (click)="toggleOrientation()" [class.active]="isVertical">
-      {{ isVertical ? '│ Vertical' : '━ Horizontal' }}
+      {{ isVertical ? lang.t().BTN_HORIZONTAL : lang.t().BTN_VERTICAL }}
     </button>
 
   </div>
@@ -18,7 +19,7 @@
       @if (steps.length === 0 && isEditMode) {
       <div class="start-container">
         <button class="add-btn-big start-btn" (click)="addStepAtIndex(0, $event)">
-          + ROZPOCZNIJ (DODAJ KROK)
+          {{ lang.t().START_BTN }}
         </button>
       </div>
       }
@@ -32,9 +33,9 @@
 
             @if (isEditMode) {
             <div class="hover-actions">
-              <button class="btn-toggle" (click)="toggleType(step)" title="Zmień typ / Reset">🔄</button>
+              <button class="btn-toggle" (click)="toggleType(step)" [title]="lang.t().TIP_CHANGE_TYPE">🔄</button>
               <div style="width: 1px; height: 14px; background: #555;"></div>
-              <button class="btn-delete-x" (click)="deleteStep(i)" title="Usuń krok">×</button>
+              <button class="btn-delete-x" (click)="deleteStep(i)" [title]="lang.t().TIP_DELETE">×</button>
             </div>
             }
 
@@ -63,9 +64,9 @@
             </div>
             }
 
-            @if (isEditMode && (step.sideRects?.length || 0) < 5) { <button class="add-rect-btn" (click)="addRect(step)"
-              (mousedown)="$event.stopPropagation()">
-              + Dodaj opcję
+            @if (isEditMode && (step.sideRects?.length || 0) < 5) { 
+              <button class="add-rect-btn" (click)="addRect(step)" (mousedown)="$event.stopPropagation()">
+                {{ lang.t().ADD_OPTION_BTN }}
               </button>
               }
 
@@ -88,7 +89,7 @@
           @if (isEditMode) {
           <div class="arrow-short"></div>
           <button class="add-btn-big" (click)="addStepAtIndex(steps.length, $event)">
-            + Dodaj
+            {{ lang.t().ADD_STEP_BTN }}
           </button>
           }
         </div>

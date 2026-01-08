@@ -1,6 +1,7 @@
 import { Component, ElementRef, Host, HostListener, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslationService } from '../translation.service';
 
 export interface WorkflowStep {
   id: number;
@@ -19,7 +20,8 @@ export interface WorkflowStep {
 
 
 export class WorkFlowComponent {
-
+  
+  constructor(public lang: TranslationService) {}
   @Input() steps: WorkflowStep[] = [];
 
   //Stan Widoku
