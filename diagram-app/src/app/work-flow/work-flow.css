@@ -591,3 +591,22 @@
 .workflow-row.vertical-layout .remove-rect-btn:hover {
   transform: translateX(-50%) scale(1.2);
 }
+
+/* ========================================
+   MOBILE RESPONSIVE (< 600px)
+   ======================================== */
+
+@media (max-width: 600px) {
+  .controls-top-right {
+    flex-direction: column;
+    top: 12px;
+    right: 12px;
+    padding: 5px;
+    gap: 4px;
+  }
+
+  .controls-top-right button {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+}

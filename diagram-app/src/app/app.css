@@ -494,3 +494,77 @@
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
+
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.lang-toggle-btn {
+  padding: 3px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.lang-toggle-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #e0e0e0;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE (< 600px)
+   ======================================== */
+
+@media (max-width: 600px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px;
+    z-index: 200;
+  }
+
+  .sidebar.sidebar-closed {
+    transform: translateX(-100%);
+    width: 260px;
+    padding: 16px;
+    opacity: 1;
+  }
+
+  .toggle-sidebar-btn {
+    position: fixed;
+    z-index: 250;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+ 
+  .sidebar:not(.sidebar-closed) ~ .diagram-area .toggle-sidebar-btn,
+  .app-layout:has(.sidebar:not(.sidebar-closed)) .toggle-sidebar-btn {
+    left: 220px;
+    top: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+
+  .sidebar-header {
+    gap: 8px;
+    margin-bottom: 12px;
+    justify-content: normal;
+  }
+
+  .lang-toggle-btn {
+    padding: 2px 5px;
+    font-size: 9px;
+  }
+}

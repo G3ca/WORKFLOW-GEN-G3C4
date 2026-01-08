@@ -2,10 +2,10 @@
   
   <aside class="sidebar" [class.sidebar-closed]="!isSidebarOpen">
     
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <div class="sidebar-header">
         <h2 style="margin: 0;">{{ lang.t().MENU_TITLE }}</h2>
         
-        <button (click)="lang.toggleLang()" style="padding: 3px 6px; font-size: 10px; cursor: pointer; background: rgba(255,255,255,0.1); color: #94a3b8; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; transition: all 0.2s;">
+        <button class="lang-toggle-btn" (click)="lang.toggleLang()">
            {{ lang.currentLang() === 'en' ? '🗽 EN' : '🌐 PL' }}
         </button>
     </div>
